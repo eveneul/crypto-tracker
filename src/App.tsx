@@ -69,7 +69,7 @@ body {
 	font-family: 'Noto Sans KR', sans-serif;
 	background-color: ${(props) => props.theme.bgColor};
 	color: ${(props) => props.theme.textColor};
-  letter-spacing: -0.05em;
+  
 }
 
 *,
@@ -85,6 +85,7 @@ body {
 }
 
 a {
+  display: block;
   color: inherit;
   cursor: pointer;
   text-decoration: none;
