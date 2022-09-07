@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -6,12 +7,29 @@ const Header = styled.header`
 	border-bottom: 1px solid #888;
 `;
 const Inner = styled.div`
-	max-width: 560px;
+	max-width: 480px;
 	margin: 0 auto;
 `;
 
+const Loading = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: calc(100vh - 120px);
+
+	span {
+		font-size: 28px;
+		color: ${(props) => props.theme.accentColor};
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+`;
+
 const HeaderInner = styled.div`
+	max-width: 480px;
 	height: 100%;
+	margin: 0 auto;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -43,44 +61,37 @@ const Coin = styled.li`
 `;
 
 const Title = styled.h1`
-	font-size: 48px;
+	font-size: 36px;
 	font-weight: bold;
 	letter-spacing: -0.025em;
 	color: ${(props) => props.theme.accentColor};
 	text-transform: uppercase;
 `;
 
-const coins = [
-	{
-		id: 'btc-bitcoin',
-		name: 'Bitcoin',
-		symbol: 'BTC',
-		rank: 1,
-		is_new: false,
-		is_active: true,
-		type: 'coin',
-	},
-	{
-		id: 'eth-ethereum',
-		name: 'Ethereum',
-		symbol: 'ETH',
-		rank: 2,
-		is_new: false,
-		is_active: true,
-		type: 'coin',
-	},
-	{
-		id: 'usdt-tether',
-		name: 'Tether',
-		symbol: 'USDT',
-		rank: 3,
-		is_new: false,
-		is_active: true,
-		type: 'token',
-	},
-];
+interface CoinInterface {
+	id: string;
+	name: string;
+	symbol: string;
+	rank: number;
+	is_new: boolean;
+	is_active: boolean;
+	type: string;
+}
 
 function Coins() {
+	const [coins, setCoins] = useState<CoinInterface[]>([]);
+	const [loading, setLoading] = useState(true);
+	useEffect(() => {
+		(async () => {
+			const response = await fetch('https://api.coinpaprika.com/v1/coins');
+			const json = await response.json();
+			setCoins(json.slice(0, 100));
+			setLoading(false);
+		})();
+	}, []);
+	// async, await을 쓰기 위해 function이 필요한데 useEffect에서 해결하려면
+	// (function)()으로 쓰면 된다
+
 	return (
 		<>
 			<Header>
@@ -90,13 +101,19 @@ function Coins() {
 			</Header>
 			<Inner>
 				<Container>
-					<CoinsList>
-						{coins.map((coin) => (
-							<Coin key={coin.id}>
-								<Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
-							</Coin>
-						))}
-					</CoinsList>
+					{loading ? (
+						<Loading>
+							<span>Loading..</span>
+						</Loading>
+					) : (
+						<CoinsList>
+							{coins.map((coin) => (
+								<Coin key={coin.id}>
+									<Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+								</Coin>
+							))}
+						</CoinsList>
+					)}
 				</Container>
 			</Inner>
 		</>
