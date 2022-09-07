@@ -47,7 +47,15 @@ const Coin = styled.li`
 	transition: color 0.2s ease-in;
 
 	a {
+		display: flex;
+		align-items: center;
 		padding: 20px;
+	}
+
+	img {
+		width: 25px;
+		height: 25px;
+		margin-right: 10px;
 	}
 
 	&:not(:first-child) {
@@ -109,7 +117,17 @@ function Coins() {
 						<CoinsList>
 							{coins.map((coin) => (
 								<Coin key={coin.id}>
-									<Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+									<Link
+										to={{
+											pathname: `/${coin.id}`,
+											state: { name: coin.name },
+										}}>
+										<img
+											src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+											alt={coin.name}
+										/>
+										{coin.name} &rarr;
+									</Link>
 								</Coin>
 							))}
 						</CoinsList>
