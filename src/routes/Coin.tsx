@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import {
+	Link,
+	Route,
+	Switch,
+	useLocation,
+	useParams,
+	useRouteMatch,
+} from 'react-router-dom';
 import styled from 'styled-components';
+import Chart from './Chart';
+import Price from './Price';
 
 interface Params {
 	coinId: string;
@@ -89,6 +98,32 @@ const DescArea = styled.p`
 	padding: 0 10px;
 `;
 
+const Tabs = styled.div`
+	display: flex;
+	justify-content: space-between;
+	margin: 20px 0;
+	a {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: calc(50% - 20px);
+		height: 40px;
+		background-color: ${(props) => props.theme.articleBg};
+		color: ${(props) => props.theme.textColor};
+		border-radius: 10px;
+		&:nth-child(2n) {
+			margin-left: 20px;
+		}
+	}
+`;
+
+const Tab = styled.div`
+	padding: 20px;
+	background-color: ${(props) => props.theme.textColor};
+	color: ${(props) => props.theme.articleBg};
+	border-radius: 20px;
+`;
+
 interface IRouteState {
 	name: string;
 }
@@ -154,7 +189,10 @@ function Coin() {
 	const [info, setInfo] = useState<IInfoData>();
 	const [price, setPrice] = useState<IPriceData>();
 	const { state } = useLocation<IRouteState>();
-	// 이미 API를 가지고 있으니까 따로 API를 호출할 이유가 없음
+	const priceMatch = useRouteMatch('/:coinId/price');
+	const chartMatch = useRouteMatch('/:coinId/chart');
+	// 유저가 해당 url에 접속하면 알려 주는 Hook
+	console.log(chartMatch);
 	useEffect(() => {
 		(async () => {
 			const infoData = await (
@@ -212,6 +250,24 @@ function Coin() {
 									<Desc>{price?.max_supply}</Desc>
 								</InfoBox>
 							</InnerArea>
+
+							<Tabs>
+								<Link to={`/${coinId}/price`}>Price</Link>
+								<Link to={`/${coinId}/Chart`}>Chart</Link>
+							</Tabs>
+
+							<Switch>
+								<Route path={`/${coinId}/price`}>
+									<Tab>
+										<Price />
+									</Tab>
+								</Route>
+								<Route path={`/${coinId}/chart`}>
+									<Tab>
+										<Chart />
+									</Tab>
+								</Route>
+							</Switch>
 						</Container>
 					</Inner>
 				</div>
