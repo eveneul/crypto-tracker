@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import {
 	Link,
 	Route,
@@ -8,6 +9,7 @@ import {
 	useRouteMatch,
 } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from './Chart';
 import Price from './Price';
 
@@ -184,28 +186,20 @@ interface IPriceData {
 
 function Coin() {
 	const { coinId } = useParams<Params>();
-	const [loading, setLoading] = useState(true);
-	const [info, setInfo] = useState<IInfoData>();
-	const [price, setPrice] = useState<IPriceData>();
 	const { state } = useLocation<IRouteState>();
 	const priceMatch = useRouteMatch('/:coinId/price');
 	const chartMatch = useRouteMatch('/:coinId/chart');
-	// 유저가 해당 url에 접속하면 알려 주는 Hook
-	console.log(chartMatch);
-	useEffect(() => {
-		(async () => {
-			const infoData = await (
-				await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-			).json();
-			const priceData = await (
-				await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-			).json();
 
-			setInfo(infoData);
-			setPrice(priceData);
-			setLoading(false);
-		})();
-	}, [coinId]);
+	const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
+		['info', coinId],
+		() => fetchCoinInfo(coinId)
+	);
+	const { isLoading: tickerLoading, data: tickersData } = useQuery<IPriceData>(
+		['tickers', coinId],
+		() => fetchCoinTickers(coinId)
+	);
+
+	const loading = infoLoading || tickerLoading;
 
 	return (
 		<>
@@ -227,26 +221,26 @@ function Coin() {
 							<InnerArea>
 								<InfoBox>
 									<Title>rank:</Title>
-									<Desc>{info?.rank}</Desc>
+									<Desc>{infoData?.rank}</Desc>
 								</InfoBox>
 								<InfoBox>
 									<Title>symbol:</Title>
-									<Desc>{info?.symbol}</Desc>
+									<Desc>{infoData?.symbol}</Desc>
 								</InfoBox>
 								<InfoBox>
 									<Title>open source:</Title>
-									<Desc>{info?.is_active ? 'Yes' : 'No'}</Desc>
+									<Desc>{infoData?.is_active ? 'Yes' : 'No'}</Desc>
 								</InfoBox>
 							</InnerArea>
-							<DescArea>{info?.description}</DescArea>
+							<DescArea>{infoData?.description}</DescArea>
 							<InnerArea>
 								<InfoBox>
 									<Title>total suply:</Title>
-									<Desc>{price?.circulating_supply}</Desc>
+									<Desc>{tickersData?.circulating_supply}</Desc>
 								</InfoBox>
 								<InfoBox>
 									<Title>max supply:</Title>
-									<Desc>{price?.max_supply}</Desc>
+									<Desc>{tickersData?.max_supply}</Desc>
 								</InfoBox>
 							</InnerArea>
 
