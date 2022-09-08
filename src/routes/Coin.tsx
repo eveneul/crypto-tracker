@@ -116,7 +116,6 @@ const Tabs = styled.div`
 		}
 	}
 `;
-
 const Tab = styled.div`
 	padding: 20px;
 	background-color: ${(props) => props.theme.textColor};

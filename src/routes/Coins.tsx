@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchCoins } from '../api';
 
 const Header = styled.header`
 	height: 120px;
@@ -76,7 +78,7 @@ const Title = styled.h1`
 	text-transform: uppercase;
 `;
 
-interface CoinInterface {
+interface ICoin {
 	id: string;
 	name: string;
 	symbol: string;
@@ -87,18 +89,8 @@ interface CoinInterface {
 }
 
 function Coins() {
-	const [coins, setCoins] = useState<CoinInterface[]>([]);
-	const [loading, setLoading] = useState(true);
-	useEffect(() => {
-		(async () => {
-			const response = await fetch('https://api.coinpaprika.com/v1/coins');
-			const json = await response.json();
-			setCoins(json.slice(0, 100));
-			setLoading(false);
-		})();
-	}, []);
-	// async, await을 쓰기 위해 function이 필요한데 useEffect에서 해결하려면
-	// (function)()으로 쓰면 된다
+	const { isLoading, data } = useQuery<ICoin[]>('allCoin', fetchCoins);
+	// useQuery로 api를 간단하게 불러올 수 있음
 
 	return (
 		<>
@@ -109,13 +101,13 @@ function Coins() {
 			</Header>
 			<Inner>
 				<Container>
-					{loading ? (
+					{isLoading ? (
 						<Loading>
 							<span>Loading..</span>
 						</Loading>
 					) : (
 						<CoinsList>
-							{coins.map((coin) => (
+							{data?.slice(0, 100).map((coin) => (
 								<Coin key={coin.id}>
 									<Link
 										to={{
