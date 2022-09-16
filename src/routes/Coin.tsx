@@ -120,7 +120,7 @@ const Tabs = styled.div`
 `;
 const Tab = styled.div`
 	padding: 20px;
-	background-color: ${(props) => props.theme.textColor};
+	background-color: ${(props) => props.theme.bgColor};
 	color: ${(props) => props.theme.articleBg};
 	border-radius: 20px;
 `;
