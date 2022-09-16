@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/crypto-tracker.git/static/js/main.eba3e102.js",
+    "index.html": "/crypto-tracker.git/index.html",
+    "main.eba3e102.js.map": "/crypto-tracker.git/static/js/main.eba3e102.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.eba3e102.js"
+  ]
+}
