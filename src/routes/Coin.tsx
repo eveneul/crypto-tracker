@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import Helmet from 'react-helmet';
 import {
 	Link,
 	Route,
@@ -210,6 +211,9 @@ function Coin() {
 				</Loading>
 			) : (
 				<div className='wrapper'>
+					<Helmet>
+						<title>{coinId}</title>
+					</Helmet>
 					<CoinHeader>
 						<Inner>
 							<Link to='/'>&larr;</Link>
@@ -228,8 +232,8 @@ function Coin() {
 									<Desc>{infoData?.symbol}</Desc>
 								</InfoBox>
 								<InfoBox>
-									<Title>open source:</Title>
-									<Desc>{infoData?.is_active ? 'Yes' : 'No'}</Desc>
+									<Title>price:</Title>
+									<Desc>${tickersData?.quotes.USD.price.toFixed(3)}</Desc>
 								</InfoBox>
 							</InnerArea>
 							<DescArea>{infoData?.description}</DescArea>
