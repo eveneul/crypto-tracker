@@ -48,6 +48,7 @@ const CoinHeader = styled.header`
 		transform: translate(-50%, -50%);
 		color: ${(props) => props.theme.accentColor};
 		font-size: 32px;
+		text-transform: uppercase;
 		font-weight: bold;
 	}
 
@@ -212,8 +213,7 @@ function Coin() {
 					<CoinHeader>
 						<Inner>
 							<Link to='/'>&larr;</Link>
-							<h2 className='title'>{state?.name || 'Loading..'}</h2>
-							{/* 시크릿모드에서 바로 상세화면으로 들어오면 Loading 화면만 보게 될 것 */}
+							<h2 className='title'>{coinId}</h2>
 						</Inner>
 					</CoinHeader>
 					<Inner>
