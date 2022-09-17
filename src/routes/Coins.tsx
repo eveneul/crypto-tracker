@@ -102,11 +102,7 @@ interface ICoin {
 	type: string;
 }
 
-interface ICoinsProps {
-	toggleDark: () => void;
-}
-
-function Coins({ toggleDark }: ICoinsProps) {
+function Coins() {
 	const { isLoading, data } = useQuery<ICoin[]>('allCoin', fetchCoins);
 	// useQuery로 api를 간단하게 불러올 수 있음
 
@@ -118,7 +114,6 @@ function Coins({ toggleDark }: ICoinsProps) {
 			<Header>
 				<HeaderInner>
 					<Title>Crypto Coin Tracker</Title>
-					<button onClick={toggleDark}>클릭</button>
 				</HeaderInner>
 			</Header>
 			<Inner>
