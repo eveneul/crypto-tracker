@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { fetchCoins } from '../api';
+import { isDarkAtom } from '../atoms';
 
 const Header = styled.header`
 	height: 120px;
@@ -43,6 +45,11 @@ const HeaderInner = styled.div`
 		position: absolute;
 		bottom: 10px;
 		right: 20px;
+		font-size: 12px;
+		padding: 8px;
+		background-color: ${(props) => props.theme.articleBg};
+		color: ${(props) => props.theme.textColor};
+		border-radius: 8px;
 	}
 `;
 const Container = styled.main``;
@@ -105,6 +112,7 @@ interface ICoin {
 function Coins() {
 	const { isLoading, data } = useQuery<ICoin[]>('allCoin', fetchCoins);
 	// useQuery로 api를 간단하게 불러올 수 있음
+	const setDarkAtom = useSetRecoilState(isDarkAtom);
 
 	return (
 		<>
@@ -114,6 +122,9 @@ function Coins() {
 			<Header>
 				<HeaderInner>
 					<Title>Crypto Coin Tracker</Title>
+					<button onClick={() => setDarkAtom((current) => !current)}>
+						Change Mode
+					</button>
 				</HeaderInner>
 			</Header>
 			<Inner>
