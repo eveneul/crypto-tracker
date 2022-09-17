@@ -8,15 +8,20 @@ import {
 import Coin from './routes/Coin';
 import Coins from './routes/Coins';
 
-function Router() {
+interface IRouterProps {
+	toggleDark: () => void;
+	isDark: boolean;
+}
+
+function Router({ toggleDark, isDark }: IRouterProps) {
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename={process.env.PUBLIC_URL}>
 			<Switch>
 				<Route path='/:coinId'>
-					<Coin />
+					<Coin isDark={isDark} />
 				</Route>
 				<Route exact path='/'>
-					<Coins />
+					<Coins toggleDark={toggleDark} />
 				</Route>
 			</Switch>
 		</BrowserRouter>
