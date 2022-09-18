@@ -202,7 +202,6 @@ function Coin() {
 	);
 
 	const loading = infoLoading || tickerLoading;
-
 	return (
 		<>
 			{loading ? (
@@ -216,7 +215,7 @@ function Coin() {
 					</Helmet>
 					<CoinHeader>
 						<Inner>
-							<Link to='/'>&larr;</Link>
+							<Link to={`${process.env.PUBLIC_URL}/`}>&larr;</Link>
 							<h2 className='title'>{coinId}</h2>
 						</Inner>
 					</CoinHeader>
@@ -249,17 +248,21 @@ function Coin() {
 							</InnerArea>
 
 							<Tabs>
-								<Link to={`/${coinId}/price`}>Price</Link>
-								<Link to={`/${coinId}/Chart`}>Chart</Link>
+								<Link to={`${process.env.PUBLIC_URL}/${coinId}/price`}>
+									Price
+								</Link>
+								<Link to={`${process.env.PUBLIC_URL}/${coinId}/Chart`}>
+									Chart
+								</Link>
 							</Tabs>
 
 							<Switch>
-								<Route path={`/${coinId}/price`}>
+								<Route path={`${process.env.PUBLIC_URL}/${coinId}/price`}>
 									<Tab>
 										<Price />
 									</Tab>
 								</Route>
-								<Route path={`/${coinId}/chart`}>
+								<Route path={`${process.env.PUBLIC_URL}/${coinId}/chart`}>
 									<Tab>
 										<Chart coinId={coinId} />
 									</Tab>
