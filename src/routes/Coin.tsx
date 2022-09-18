@@ -259,7 +259,7 @@ function Coin() {
 							<Switch>
 								<Route path={`${process.env.PUBLIC_URL}/${coinId}/price`}>
 									<Tab>
-										<Price />
+										<Price coinId={coinId} />
 									</Tab>
 								</Route>
 								<Route path={`${process.env.PUBLIC_URL}/${coinId}/chart`}>
