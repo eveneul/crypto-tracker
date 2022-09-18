@@ -2,12 +2,6 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { fetchCoinTickers } from '../api';
 
-const LoadingWrap = styled.div`
-	width: 100%;
-	height: 100px;
-	background-color: ${(props) => props.theme.articleBg};
-`;
-
 const InnerTop = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -77,7 +71,6 @@ function Price({ coinId }: IChartProps) {
 	);
 	return (
 		<>
-			{/* <LoadingWrap>loading</LoadingWrap> */}
 			<InnerTop>
 				<span>{coinId}</span>
 				<span>{data?.last_updated}</span>
